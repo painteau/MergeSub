@@ -27,7 +27,7 @@ logger.addHandler(stream_handler)
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-path_dir = r'\\192.168.1.100\media\Movies'  # Path without ending slash
+path_dir = r'\\192.168.1.100\media\TV'  # Path without ending slash
 
 clear_console()
 logging.info('Start of script.')
