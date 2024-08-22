@@ -27,47 +27,60 @@ logger.addHandler(stream_handler)
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-path_dir = r'/mnt/user/media/test/'  # Path without ending slash
+path_dir = r'\\192.168.1.100\media\Movies'  # Path without ending slash
 
 clear_console()
 logging.info('Start of script.')
 
-for source_name in glob.glob(os.path.join(path_dir, "**", "*.srt"), recursive=True):
-    logging.info('-------------------------------------------------------------------------------------------')
-    path, fullname = os.path.split(source_name)
-    logging.info(fullname)
-    basename, ext = os.path.splitext(fullname)
-    filename, ext = os.path.splitext(basename)
-    
-    # Détermination du fichier source (soit .srt soit .en.srt)
-    if fullname.endswith(".en.srt"):
-        primary_srt = Path(source_name)
-        logging.info("Found English subtitles (.en.srt).")
-    elif fullname.endswith(".srt") and not fullname.endswith(".en.srt") and not fullname.endswith(".ko.srt") and not fullname.endswith(".yo.srt"):
-        primary_srt = Path(source_name)
-        logging.info("Found primary subtitles (.srt).")
-    else:
-        continue  # Si ce n'est ni .srt ni .en.srt, on passe au fichier suivant
+# Extensions vidéo à rechercher
+video_extensions = ('*.mp4', '*.mkv', '*.avi', '*.mov')
 
-    ko_file = Path(f"{path}/{filename}.ko.srt")
-    yo_file = Path(f"{path}/{filename}.yo.srt")
-    
-    if ko_file.is_file():
-        logging.info('Korean subtitles exist for this file.')
+# Recherche de tous les fichiers vidéo dans le répertoire spécifié
+for extension in video_extensions:
+    for video_file in glob.glob(os.path.join(path_dir, "**", extension), recursive=True):
+        logging.info('-------------------------------------------------------------------------------------------')
+        path, fullname = os.path.split(video_file)
+        logging.info(f'Processing video file: {fullname}')
+        basename, ext = os.path.splitext(fullname)
+        filename, ext = os.path.splitext(basename)
         
-        if yo_file.is_file():
-            logging.info('Yoruba subtitles already exist, skipping file.')
+        # Priorité de sélection : .srt > .en.srt > .fr.srt
+        generic_file = Path(f"{path}/{filename}.srt")
+        en_file = Path(f"{path}/{filename}.en.srt")
+        fr_file = Path(f"{path}/{filename}.fr.srt")
+        
+        if generic_file.is_file() and not fullname.endswith(".en.srt") and not fullname.endswith(".fr.srt") and not fullname.endswith(".ko.srt") and not fullname.endswith(".yo.srt"):
+            primary_srt = generic_file
+            logging.info("Found primary subtitles (.srt).")
+        elif en_file.is_file():
+            primary_srt = en_file
+            logging.info("Found English subtitles (.en.srt).")
+        elif fr_file.is_file():
+            primary_srt = fr_file
+            logging.info("Found French subtitles (.fr.srt).")
         else:
-            logging.info("Yoruba subtitles do not exist... yet!")
-            logging.info('Attempting to merge primary and Korean subtitles...')
+            logging.info("No suitable subtitles found for this video, skipping.")
+            continue  # Aucun fichier de sous-titres approprié trouvé, on passe à la vidéo suivante
+
+        ko_file = Path(f"{path}/{filename}.ko.srt")
+        yo_file = Path(f"{path}/{filename}.yo.srt")
+        
+        if ko_file.is_file():
+            logging.info('Korean subtitles exist for this file.')
             
-            try:
-                srtmerge([str(ko_file), str(primary_srt)], str(yo_file))
-                logging.info(f"Merging to {yo_file} was successful!")
-            except Exception as e:
-                logging.warning(f"Oops! Merging was unsuccessful for {filename}! Error: {e}")
-    else:
-        logging.info("Unfortunately, we could not find Korean subtitles for this file :( !")
+            if yo_file.is_file():
+                logging.info('Yoruba subtitles already exist, skipping file.')
+            else:
+                logging.info("Yoruba subtitles do not exist... yet!")
+                logging.info('Attempting to merge primary and Korean subtitles...')
+                
+                try:
+                    srtmerge([str(ko_file), str(primary_srt)], str(yo_file))
+                    logging.info(f"Merging to {yo_file} was successful!")
+                except Exception as e:
+                    logging.warning(f"Oops! Merging was unsuccessful for {filename}! Error: {e}")
+        else:
+            logging.info("Unfortunately, we could not find Korean subtitles for this file :( !")
 
 logging.info('End of script.')
 time.sleep(3)

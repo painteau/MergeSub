@@ -1,0 +1,2 @@
+python MergeSub.py
+pause
