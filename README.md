@@ -1,6 +1,24 @@
 # MergeSub - Automatic Subtitle Merger
 
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](CHANGELOG.md)
+
 Outil Python pour fusionner automatiquement des sous-titres coréens avec des sous-titres primaires afin de créer des fichiers de sous-titres bilingues.
+
+## 📑 Table des matières
+
+- [Fonctionnalités](#-fonctionnalités)
+- [Installation](#-installation)
+- [Configuration](#️-configuration)
+- [Utilisation](#-utilisation)
+- [Exemple de sortie](#-exemple-de-sortie)
+- [Structure du projet](#-structure-du-projet)
+- [Optimisations](#-optimisations-implémentées)
+- [Dépannage](#-dépannage)
+- [Changelog](#-changelog)
+- [Licence](#-licence)
+- [Contribution](#-contribution)
 
 ## 🚀 Fonctionnalités
 
@@ -17,9 +35,29 @@ Outil Python pour fusionner automatiquement des sous-titres coréens avec des so
 - Python 3.7+
 - Module `srtmerge`
 
-```bash
-pip install srtmerge
-```
+## 📦 Installation
+
+1. **Cloner le dépôt** (ou télécharger les fichiers)
+   ```bash
+   git clone https://github.com/painteau/MergeSub.git
+   cd MergeSub
+   ```
+
+2. **Installer les dépendances**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Configurer le script**
+   ```bash
+   # Modifier config.json selon vos besoins
+   nano config.json
+   ```
+
+4. **Lancer le script**
+   ```bash
+   python MergeSub.py
+   ```
 
 ## ⚙️ Configuration
 
@@ -90,6 +128,29 @@ Le script va :
 2025-12-26 10:15:30 :: INFO :: ✓ MergeSub completed
 ```
 
+## 📁 Structure du projet
+
+```
+MergeSub/
+├── MergeSub.py           # Script principal (classe SubtitleMerger)
+├── config.json           # Configuration externalisée
+├── requirements.txt      # Dépendances Python
+├── README.md             # Documentation (ce fichier)
+├── CHANGELOG.md          # Historique des versions
+├── LICENSE               # Licence MIT
+├── .gitignore            # Fichiers à ignorer par Git
+└── activity.log          # Logs d'exécution (généré automatiquement)
+```
+
+### Fichiers principaux
+
+| Fichier | Description |
+|---------|-------------|
+| `MergeSub.py` | Script principal avec architecture OOP |
+| `config.json` | Configuration : chemins, extensions, priorités |
+| `requirements.txt` | Dépendances : `srtmerge>=0.1.0` |
+| `activity.log` | Logs d'exécution avec rotation (1 MB max) |
+
 ## 🔧 Optimisations implémentées
 
 ### Performance
@@ -136,10 +197,47 @@ Vérifiez que :
 - Les sous-titres coréens existent (.ko.srt)
 - Les sous-titres de sortie n'existent pas déjà (.yo.srt)
 
+## 📋 Changelog
+
+Toutes les modifications notables sont documentées dans [CHANGELOG.md](CHANGELOG.md).
+
+### Version actuelle : 2.0.0
+
+Refonte majeure avec :
+- Architecture orientée objet
+- Configuration externalisée
+- Optimisations de performance
+- Gestion d'erreurs robuste
+- Documentation complète
+
+Voir [CHANGELOG.md](CHANGELOG.md) pour l'historique complet.
+
 ## 📄 Licence
 
-Ce projet est fourni tel quel, sans garantie.
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+**En résumé** : Vous êtes libre d'utiliser, modifier et distribuer ce logiciel, tant que vous conservez la notice de copyright.
 
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou un pull request.
+Les contributions sont les bienvenues !
+
+### Comment contribuer
+
+1. **Fork** le projet
+2. **Créer** une branche (`git checkout -b feature/AmazingFeature`)
+3. **Commit** vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** vers la branche (`git push origin feature/AmazingFeature`)
+5. **Ouvrir** une Pull Request
+
+### Rapporter un bug
+
+Ouvrez une [issue](https://github.com/painteau/MergeSub/issues) avec :
+- Description du problème
+- Étapes pour reproduire
+- Comportement attendu vs comportement actuel
+- Logs pertinents (extraits de `activity.log`)
+
+---
+
+**Développé avec ❤️ pour la communauté des sous-titres bilingues**
