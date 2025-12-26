@@ -1,0 +1,11 @@
+{
+  "media_directory": "\\\\192.168.1.100\\media\\TV",
+  "video_extensions": [".mp4", ".mkv", ".avi", ".mov"],
+  "subtitle_priorities": [".srt", ".en.srt", ".fr.srt"],
+  "korean_subtitle_extension": ".ko.srt",
+  "output_subtitle_extension": ".yo.srt",
+  "excluded_subtitle_patterns": [".en.srt", ".fr.srt", ".ko.srt", ".yo.srt"],
+  "log_file": "activity.log",
+  "log_max_size": 1000000,
+  "log_backup_count": 1
+}
